@@ -215,4 +215,25 @@ describe("SignUp Controller", () => {
     expect(httpResponse.statusCode).toBe(500);
     expect(httpResponse.body).toEqual(new ServerError());
   });
+  it("should return 200 if valid data is provided", () => {
+    const { sut } = makeSut();
+
+    const httpRequest: HttpRequest = {
+      body: {
+        name: "name",
+        email: "email@email.com",
+        password: "password",
+        passwordConfirmation: "password"
+      }
+    };
+
+    const httpResponse = sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(200);
+    expect(httpResponse.body).toEqual({
+      id: "id",
+      name: "name",
+      email: "email@email.com",
+      password: "password"
+    });
+  });
 });
