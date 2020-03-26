@@ -8,5 +8,8 @@
   },
   "keywords": [],
   "author": "João Guilherme Berti Sczip <joao.sczip@hotmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "git-commit-msg-linter": "^2.4.2"
+  }
 }
