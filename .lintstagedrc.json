@@ -1,3 +1,5 @@
 {
-  "*.ts": ["npm run test:staged"]
+  "*.ts": [
+    "npm run test:staged"
+  ]
 }
