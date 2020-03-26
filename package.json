@@ -1,0 +1,12 @@
+{
+  "name": "js_clean_api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "João Guilherme Berti Sczip <joao.sczip@hotmail.com>",
+  "license": "MIT"
+}
