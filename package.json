@@ -10,6 +10,8 @@
   "author": "João Guilherme Berti Sczip <joao.sczip@hotmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "git-commit-msg-linter": "^2.4.2"
+    "@types/node": "^12.12.31",
+    "git-commit-msg-linter": "^2.4.2",
+    "typescript": "^3.8.3"
   }
 }
