@@ -24,6 +24,6 @@ export class DbAddAccount implements AddAcount {
       ...accountData,
       password: hashedPassword
     });
-    return new Promise(resolve => resolve(null));
+    return new Promise(resolve => resolve(account));
   }
 }
