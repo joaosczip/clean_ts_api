@@ -19,4 +19,10 @@ describe("EmailValidatorAdapter", () => {
     const isValid = sut.isValid("email@email.com");
     expect(isValid).toBe(true);
   });
+  it("should call validator with correct email", () => {
+    const sut = new EmailValidatorAdapter();
+    const validatorMock = jest.spyOn(validator, "isEmail");
+    sut.isValid("email@email.com");
+    expect(validatorMock).toHaveBeenCalledWith("email@email.com");
+  });
 });
