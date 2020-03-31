@@ -4,6 +4,8 @@ import {
   HttpResponse,
   HttpRequest
 } from "../../presentation/protocols";
+import { serverError } from "../../presentation/helpers/http-helper";
+import { LogErrorRepository } from "../../data/protocols/log-error-repository";
 
 const makeControllerStub = (): Controller => {
   class ControllerStub implements Controller {
@@ -21,15 +23,29 @@ const makeControllerStub = (): Controller => {
   return new ControllerStub();
 };
 
+const makeLogErrorRepository = (): LogErrorRepository => {
+  class LogErrorRepositoryStub implements LogErrorRepository {
+    async log(stack: string): Promise<void> {
+      return new Promise(resolve => resolve());
+    }
+  }
+  return new LogErrorRepositoryStub();
+};
+
 interface SutTypes {
   sut: LogControllerDecorator;
   controllerStub: Controller;
+  logErrorRepositoryStub: LogErrorRepository;
 }
 
 const makeSut = (): SutTypes => {
   const controllerStub = makeControllerStub();
-  const sut = new LogControllerDecorator(controllerStub);
-  return { sut, controllerStub };
+  const logErrorRepositoryStub = makeLogErrorRepository();
+  const sut = new LogControllerDecorator(
+    controllerStub,
+    logErrorRepositoryStub
+  );
+  return { sut, controllerStub, logErrorRepositoryStub };
 };
 
 describe("LogControllerDecorator", () => {
@@ -64,5 +80,26 @@ describe("LogControllerDecorator", () => {
         name: "Joao"
       }
     });
+  });
+  it("should call logErrorRepository with correct error if controller returns returns a server error", async () => {
+    const { sut, controllerStub, logErrorRepositoryStub } = makeSut();
+    const fakeError = new Error();
+    fakeError.stack = "any_stack";
+    const logSpy = jest.spyOn(logErrorRepositoryStub, "log");
+    jest
+      .spyOn(controllerStub, "handle")
+      .mockReturnValueOnce(
+        new Promise(resolve => resolve(serverError(fakeError)))
+      );
+    const httpRequest = {
+      body: {
+        name: "name",
+        email: "email@email.com",
+        password: "password",
+        passwordConfirmation: "password"
+      }
+    };
+    await sut.handle(httpRequest);
+    expect(logSpy).toHaveBeenCalledWith("any_stack");
   });
 });
