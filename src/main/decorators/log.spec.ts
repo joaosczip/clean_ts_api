@@ -11,7 +11,9 @@ const makeControllerStub = (): Controller => {
       return new Promise(resolve =>
         resolve({
           statusCode: 200,
-          body: "success"
+          body: {
+            name: "Joao"
+          }
         })
       );
     }
@@ -44,5 +46,23 @@ describe("LogControllerDecorator", () => {
     };
     await sut.handle(httpRequest);
     expect(handleSpy).toHaveBeenCalledWith(httpRequest);
+  });
+  it("should return the same result of the controller", async () => {
+    const { sut } = makeSut();
+    const httpRequest = {
+      body: {
+        name: "name",
+        email: "email@email.com",
+        password: "password",
+        passwordConfirmation: "password"
+      }
+    };
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse).toEqual({
+      statusCode: 200,
+      body: {
+        name: "Joao"
+      }
+    });
   });
 });
